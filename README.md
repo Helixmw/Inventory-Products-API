@@ -11,6 +11,8 @@ Additional source code I have written so far
 <br>
 - app/Http/Controllers/ProductsController
 <br>
+- app/Http/Controllers/api/AuthController
+<br>
 - app/Models/Category
 <br>
 - app/Models/Product

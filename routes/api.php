@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\api\AuthController;
 
 
 /*
@@ -16,6 +17,8 @@ use App\Http\Controllers\CategoryController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post("/register", [AuthController::class,"register"]);
 
 Route::get("/categories", [CategoryController::class,"index"]);
 Route::post("/categories", [CategoryController::class,"add"]);
