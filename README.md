@@ -1,4 +1,4 @@
-# Inventory Records API
+# Inventory Products API
 
 ## This is an Inventory Records API built with Laravel with a MySQL database that manages and stores inventory records.
 
