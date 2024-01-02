@@ -1,6 +1,6 @@
-# Inventory Products API
+# Inventory Records API
 
-## This an Inventory Products API built with Laravel with a MySQL database that manages and stores inventory records.
+## This is an Inventory Records API built with Laravel with a MySQL database that manages and stores inventory records.
 
 <br>
 Additional source code I have written so far.
