@@ -4,6 +4,7 @@ use App\Http\Controllers\ProductsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\api\AuthController;
 
 
@@ -35,6 +36,13 @@ Route::get("/products/{id}", [ProductsController::class,"getProduct"]);
 Route::put("/products/{id}", [ProductsController::class,"editProduct"]);
 Route::delete("/products/{id}", [ProductsController::class,"delete"]);
 Route::get("/products/category/{categoryId}", [ProductsController::class,"GetCategoryProducts"]);
+Route::get("/products/brands/{brandId}", [ProductsController::class,"GetBrandProducts"]);
+Route::get("/products/{categoryId}/{brandId}", [ProductsController::class,"GetCategoryAndBrandProducts"]);
+Route::get("/brands", [BrandController::class,"index"]);
+Route::post("/brands", [BrandController::class,"add"]);
+Route::get("/brands/{id}", [BrandController::class,"getBrand"]);
+Route::put("/brands/{id}", [BrandController::class,"editBrand"]);
+Route::delete("/brands/{id}", [BrandController::class,"delete"]);
 Route::get("/logout", [AuthController::class,"logout"]);
 });
 

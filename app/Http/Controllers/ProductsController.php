@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Brand;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -131,6 +132,46 @@ public function GetCategoryProducts(Request $request, $categoryId){
         }
     }catch(\Exception $e){
         return response()->json(["Error"=>"Server Error"], 500);
+    }
+}
+
+public function GetBrandProducts(Request $request, $brandId){
+    try{
+        $result = Product::where('brandId', $brandId)->get()->sortDesc();
+        if($result->count() == 0){
+           return response()->json(["No Entries" => "There are no products for this brand."], 404); 
+        }else{         
+            $res = array();
+            foreach($result as $row){
+                $res[] = array("id" => $row->id,
+                "name" => $row->name,
+                "category" => $row->categoryId,
+                "quantity" => $row->quantity);
+            }
+            return response()->json($res);
+        }
+    }catch(\Exception $e){
+        return response()->json(["Error"=>"Server Error" . $e->getMessage()], 500);
+    }
+}
+
+public function GetCategoryAndBrandProducts(Request $request, $categoryId, $brandId){
+    try{
+        $result = Product::where('categoryId', $categoryId)->where('brandId', $brandId)->get()->sortDesc();
+        if($result->count() == 0){
+           return response()->json(["No Entries" => "There are no products under this brand and category."], 404); 
+        }else{         
+            $res = array();
+            foreach($result as $row){
+                $res[] = array("id" => $row->id,
+                "name" => $row->name,
+                "category" => $row->categoryId,
+                "quantity" => $row->quantity);
+            }
+            return response()->json($res);
+        }
+    }catch(\Exception $e){
+        return response()->json(["Error"=>"Server Error" . $e->getMessage()], 500);
     }
 }
 

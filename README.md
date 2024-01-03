@@ -12,11 +12,15 @@ My written source code that you can view.
 <br>
 - app/Http/Controllers/CategoryController
 <br>
+- app/Http/Controllers/BrandController
+<br>
 - app/Http/Controllers/ProductsController
 <br>
 - app/Http/Controllers/api/AuthController
 <br>
 - app/Models/Category
+<br>
+- app/Models/Brand
 <br>
 - app/Models/Product
 <br><br>
