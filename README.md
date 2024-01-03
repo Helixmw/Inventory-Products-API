@@ -9,7 +9,6 @@ My written source code that you can view.
 <br>
 - routes/api.php
 <br>
-<br>
 - app/Http/Controllers/CategoryController
 <br>
 - app/Http/Controllers/ProductsController
