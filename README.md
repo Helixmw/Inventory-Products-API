@@ -2,6 +2,7 @@
 
 ## This an Inventory Products API built with Laravel with a MySQL database that manages and stores inventory records.
 
+The API features adding product information, creating categories for products, assigning and sorting products by category and token based user authentication.
 <br>
 My written source code that you can view.
 <br>

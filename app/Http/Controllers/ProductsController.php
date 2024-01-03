@@ -20,7 +20,7 @@ class ProductsController extends Controller
             foreach($result as $row){
                 $res[] = array("id" => $row->id,
                             "name" => $row->name,
-                            "category" => $row->categoryId,
+                            "category" => $row->name,
                             "quantity" => $row->quantity);
             } 
             return response()->json($res);
