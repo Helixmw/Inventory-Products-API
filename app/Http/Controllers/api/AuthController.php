@@ -66,12 +66,12 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        try{
-            Auth::logout();
-            $request->currentAccessToken->delete();
-            return response()->json(["success"=> "Logged out"], 200);
+        try{          
+            $id = Auth::user()->currentAccessToken()->id;
+            Auth::user()->tokens()->where('id', $id)->delete();
+            return response()->json(["success"=> "logged out"], 200);
         }catch(\Exception $e){
-            return response()->json(["Error"=> "Server Error"], 500);
+            return response()->json(["Error"=> "Server Error "], 500);
         }
     }
 }

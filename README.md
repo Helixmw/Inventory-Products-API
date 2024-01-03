@@ -3,9 +3,12 @@
 ## This an Inventory Products API built with Laravel with a MySQL database that manages and stores inventory records.
 
 <br>
-Additional source code I have written so far
+My written source code that you can view.
 <br>
 ----------------------------------------------
+<br>
+- routes/api.php
+<br>
 <br>
 - app/Http/Controllers/CategoryController
 <br>

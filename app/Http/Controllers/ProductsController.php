@@ -20,13 +20,13 @@ class ProductsController extends Controller
             foreach($result as $row){
                 $res[] = array("id" => $row->id,
                             "name" => $row->name,
-                            "category" => $row->category->name,
+                            "category" => $row->categoryId,
                             "quantity" => $row->quantity);
             } 
             return response()->json($res);
             }          
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error"], 500);
+            return response()->json(["Error"=>"Server Error " . $e->getMessage()], 500);
         }
     }
 
