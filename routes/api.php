@@ -19,6 +19,8 @@ use App\Http\Controllers\api\AuthController;
 */
 
 Route::post("/register", [AuthController::class,"register"]);
+Route::post("/auth/login", [AuthController::class,"login"]);
+Route::get("/auth/logout", [AuthController::class,"logout"]);
 
 Route::get("/categories", [CategoryController::class,"index"]);
 Route::post("/categories", [CategoryController::class,"add"]);
@@ -33,6 +35,7 @@ Route::put("/products/{id}", [ProductsController::class,"editProduct"]);
 Route::delete("/products/{id}", [ProductsController::class,"delete"]);
 Route::get("/products/category/{categoryId}", [ProductsController::class,"GetCategoryProducts"]);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+
+Route::get('/user', function (Request $request) {
     return $request->user();
-});
+})->middleware('auth:sanctum');
