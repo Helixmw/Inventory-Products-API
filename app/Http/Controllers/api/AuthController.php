@@ -25,6 +25,7 @@ class AuthController extends Controller
                 'name'=>$request->name,
                 'email'=> $request->email,
                 'password'=> Hash::make($request->password),
+                'role'=> 0
             ]);
             $token = $user->createToken('InventoryApp');
             $newuser =  (object) array("id" => $user->id,
@@ -35,7 +36,7 @@ class AuthController extends Controller
                                     "token_type" => "Bearer"], 201);
         }
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error"], 500);
+            return response()->json(["Error"=>"Server Error " . $e->getMessage()], 500);
         }
     }
 
@@ -74,4 +75,8 @@ class AuthController extends Controller
             return response()->json(["Error"=> "Server Error "], 500);
         }
     }
+
+   
+
+    
 }
