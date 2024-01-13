@@ -27,13 +27,14 @@ class AuthController extends Controller
                 'password'=> Hash::make($request->password),
                 'role'=> 0
             ]);
-            $token = $user->createToken('InventoryApp');
+            //$token = $user->createToken('InventoryApp');
             $newuser =  (object) array("id" => $user->id,
             "name" => $user->name, 
             "email" => $user->email);
-            return response()->json(["success" => $newuser,
-                                    "access_token" => $token->plainTextToken,
-                                    "token_type" => "Bearer"], 201);
+            // return response()->json(["success" => $newuser,
+            //                         "access_token" => $token->plainTextToken,
+            //                         "token_type" => "Bearer"], 201);
+            return response()->json(["success" => $newuser ], 201);
         }
         }catch(\Exception $e){
             return response()->json(["Error"=>"Server Error " . $e->getMessage()], 500);

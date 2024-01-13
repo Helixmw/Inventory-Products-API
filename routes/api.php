@@ -22,11 +22,12 @@ use App\Http\Middleware\CheckUserRoles;
 */
 
 //Public Routes
-Route::post("/register", [AuthController::class,"register"]);
+
 Route::post("/login", [AuthController::class,"login"]);
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function(){
+Route::post("/register", [AuthController::class,"register"])->middleware(CheckUserRoles::class);
 Route::get("/categories", [CategoryController::class,"index"]);
 Route::post("/categories", [CategoryController::class,"add"])->middleware(CheckUserRoles::class);
 Route::get("/categories/{id}", [CategoryController::class,"getCategory"]);
@@ -35,14 +36,14 @@ Route::delete("/categories/{id}", [CategoryController::class,"delete"])->middlew
 Route::get("/products", [ProductsController::class,"index"]);
 Route::post("/products", [ProductsController::class,"add"]);
 Route::get("/products/{id}", [ProductsController::class,"getProduct"]);
-Route::put("/products/{id}", [ProductsController::class,"editProduct"]);
-Route::delete("/products/{id}", [ProductsController::class,"delete"]);
+Route::put("/products/{id}", [ProductsController::class,"editProduct"])->middleware(CheckUserRoles::class);
+Route::delete("/products/{id}", [ProductsController::class,"delete"])->middleware(CheckUserRoles::class);
 Route::get("/products/category/{categoryId}", [ProductsController::class,"GetCategoryProducts"]);
 Route::get("/products/brands/{brandId}", [ProductsController::class,"GetBrandProducts"]);
 Route::get("/products/{categoryId}/{brandId}", [ProductsController::class,"GetCategoryAndBrandProducts"]);
 Route::get("/brands", [BrandController::class,"index"]);
 Route::post("/brands", [BrandController::class,"add"])->middleware(CheckUserRoles::class);
-Route::get("/brands/{id}", [BrandController::class,"getBrand"])->middleware(CheckUserRoles::class);
+Route::get("/brands/{id}", [BrandController::class,"getBrand"]);
 Route::put("/brands/{id}", [BrandController::class,"editBrand"])->middleware(CheckUserRoles::class);
 Route::delete("/brands/{id}", [BrandController::class,"delete"])->middleware(CheckUserRoles::class);;
 Route::get("/users", [UsersController::class,"GetAllUsers"])->middleware(CheckUserRoles::class);
