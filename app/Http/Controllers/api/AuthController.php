@@ -19,7 +19,10 @@ class AuthController extends Controller
             'password'=>'required',
         ]);
         if($validator->fails()){
-            return response()->json(["Invalid Entry" => $validator->errors()], 400);
+            return response()->json([
+                "success" => false,
+                "message" => "Invalid Entry",
+                "errors" => $validator->errors()], 400);
         }else{
             $user = User::create([
                 'name'=>$request->name,
@@ -27,17 +30,17 @@ class AuthController extends Controller
                 'password'=> Hash::make($request->password),
                 'role'=> 0
             ]);
-            //$token = $user->createToken('InventoryApp');
             $newuser =  (object) array("id" => $user->id,
             "name" => $user->name, 
-            "email" => $user->email);
-            // return response()->json(["success" => $newuser,
-            //                         "access_token" => $token->plainTextToken,
-            //                         "token_type" => "Bearer"], 201);
-            return response()->json(["success" => $newuser ], 201);
+            "email" => $user->email);          
+            return response()->json(["success" => true,
+                                    "message" => "Successfully added new user"
+                                    "user" => $newuser ], 201);
         }
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error " . $e->getMessage()], 500);
+            return response()->json([
+                "success" => false,
+                "message" => "Server Error " . $e->getMessage()], 500);
         }
     }
 
@@ -51,19 +54,27 @@ class AuthController extends Controller
                 return response()->json(["Invalid Entry" => $validator->errors()], 400);
             }else{
                 if(!Auth::attempt($request->only('email','password'))){
-                    return response()->json(['Invalid Credentials'=> 'Email and Password do not match.'], 400);
+                    return response()->json([
+                        "success" => false,
+                        "message" => "Invalid Entry",
+                        "errors" => $validator->errors()], 400);
                 }else{
                     $user = User::where('email', $request->email)->first();
-                    $token = $user->createToken("InventoryApp");
-                    return response()->json(["success" => (object) array("id" => $user->id,
-                     "name" => $user->name, 
-                     "email" => $user->email),
-                    "access_token" => $token->plainTextToken,
-                    "token_type" => "Bearer"], 200);
+                    $token = $user->createToken(env("SECRET_KEY"));
+                    return response()->json([
+                    "success" => true,
+                    "message" => "Logged in"
+                    "user" => (object) array("id" => $user->id,
+                                            "name" => $user->name, 
+                                            "email" => $user->email),
+                                            "access_token" => $token->plainTextToken,
+                                            "token_type" => "Bearer"], 200);
                 }
             }
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error"], 500);
+            return response()->json([
+                "success" => false,
+                "message" => "Server Error " . $e->getMessage()], 500);
         }        
     }
 
@@ -71,9 +82,13 @@ class AuthController extends Controller
         try{          
             $id = Auth::user()->currentAccessToken()->id;
             Auth::user()->tokens()->where('id', $id)->delete();
-            return response()->json(["success"=> "logged out"], 200);
+            return response()->json([
+                "success" => true,
+                "message" => "logged out"], 200);
         }catch(\Exception $e){
-            return response()->json(["Error"=> "Server Error "], 500);
+            return response()->json([
+                "success" => false,
+                "message" => "Server Error " . $e->getMessage()], 500);
         }
     }
 

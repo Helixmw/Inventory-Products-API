@@ -17,9 +17,13 @@ class BrandController extends Controller
                 "name" => $row->name,
                 "description" => $row->description);
             }
-            return response()->json(["success"=> $res], 200);
+            return response()->json([
+                "success" => true,
+                "brands" => $res], 200);
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error"], 500);
+            return response()->json([
+                "success" => false,
+                "message" => "Server Error " . $e->getMessage()], 500);
         }
     }
 
@@ -29,13 +33,21 @@ class BrandController extends Controller
                 'name' => 'required'
             ]);
             if($validator->fails()){
-                return response()->json(["Invalid Entry"=>"Please provide a brand name."], 400);
+                return response()->json([
+                    "success" => false,
+                    "message" => "Invalid Entry",
+                    "errors" => $validator->errors()], 400);
             }else{
                 $brand = Brand::create($request->all());
-                return response()->json(["success" => (object) array("id" => $brand->id, "name" => $brand->name)], 201);
+                return response()->json([
+                    "success" => true,
+                    "message" => "Successfully added new brand"
+                    "brand" => (object) array("id" => $brand->id, "name" => $brand->name)], 201);
             }
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error"], 500);
+            return response()->json([
+                "success" => false,
+                "message" => "Server Error " . $e->getMessage()], 500);
         }
     }
 
@@ -43,12 +55,18 @@ class BrandController extends Controller
         try{
             $brand = Brand::find($id);
             if($brand == null){
-                return response()->json(["Not Found"=>"Could not find brand."], 404);
+                return response()->json([
+                    "success" => false,
+                    "message"=>"Could not find brand"], 404);
             }else{
-                return response()->json((object) array("id" => $brand->id, "name" => $brand->name));
+                return response()->json([
+                    "success" => true,
+                    "brand" => (object) array("id" => $brand->id, "name" => $brand->name)]);
             }
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error"], 500);
+            return response()->json([
+                "success" => false,
+                "message" => "Server Error " . $e->getMessage()], 500);
         }
     }
 
@@ -56,13 +74,18 @@ class BrandController extends Controller
         try{
             $brand = Brand::find($id);
             if($brand == null){
-                return response()->json(["Not Found"=>"Could not find brand."], 404);
+                return response()->json([
+                    "success" => false,
+                    "message"=>"Could not find brand"], 404);
             }else{
                 $validator = Validator::make($request->all(), [
                     'name' => 'required'
                 ]);
                 if($validator->fails()){
-                    return response()->json(["Invalid Entry"=>"Please provide a brand name."], 400);
+                    return response()->json([
+                        "success" => false,
+                        "message" => "Invalid Entry",
+                        "errors" => $validator->errors()], 400);
                 }else{
                 $brand->name = $request->name;
                 $brand->description = $request->description;
@@ -71,7 +94,9 @@ class BrandController extends Controller
                 }
             }
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error"], 500);
+            return response()->json([
+                "success" => false,
+                "message" => "Server Error " . $e->getMessage()], 500);
         }
     }
 
@@ -79,13 +104,19 @@ class BrandController extends Controller
         try{
             $brand = Brand::find($id);
             if($brand == null){
-                return response()->json(["Not Found"=>"Could not find brand."], 404);
+                return response()->json([
+                    "sucess" => false,
+                    "message"=>"Could not find brand"], 404);
             }else{
                 $brand->delete();
-                return response()->json(["success"=>"One brand has been deleted."]);
+                return response()->json([
+                    "success" => true,
+                    "message"=>"One brand has been deleted"]);
             }
         }catch(\Exception $e){
-            return response()->json(["Error"=>"Server Error"], 500);
+            return response()->json([
+                "success" => false,
+                "message" => "Server Error " . $e->getMessage()], 500);
         }
     }
 
