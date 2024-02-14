@@ -41,7 +41,7 @@ class BrandController extends Controller
                 $brand = Brand::create($request->all());
                 return response()->json([
                     "success" => true,
-                    "message" => "Successfully added new brand"
+                    "message" => "Successfully added new brand",
                     "brand" => (object) array("id" => $brand->id, "name" => $brand->name)], 201);
             }
         }catch(\Exception $e){

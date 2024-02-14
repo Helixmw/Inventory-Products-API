@@ -34,7 +34,7 @@ class AuthController extends Controller
             "name" => $user->name, 
             "email" => $user->email);          
             return response()->json(["success" => true,
-                                    "message" => "Successfully added new user"
+                                    "message" => "Successfully added new user",
                                     "user" => $newuser ], 201);
         }
         }catch(\Exception $e){
@@ -63,7 +63,7 @@ class AuthController extends Controller
                     $token = $user->createToken(env("SECRET_KEY"));
                     return response()->json([
                     "success" => true,
-                    "message" => "Logged in"
+                    "message" => "Logged in",
                     "user" => (object) array("id" => $user->id,
                                             "name" => $user->name, 
                                             "email" => $user->email),

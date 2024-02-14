@@ -8,15 +8,17 @@ use App\Models\Product;
 use App\Models\Brand;
 use Illuminate\Support\Facades\Validator;
 
+use App\Http\Interfaces\ProductInterface;
 
-class ProductsController extends Controller
+
+class ProductsController extends Controller implements ProductInterface
 {
     public function index(){
         try{
             $result = Product::all()->sortDesc();
             if($result->count() == 0){
                 return response()->json([
-                    "message" => false,
+                    "success" => false,
                     "message" => "There are no products"], 404); 
             }else{
                 $res = array();
@@ -26,7 +28,7 @@ class ProductsController extends Controller
                             "category" => $row->name,
                             "quantity" => $row->quantity);
             } 
-            return response()->json("success" => true, "products" => $res);
+            return response()->json(["success" => true, "products" => $res], 200);
             }          
         }catch(\Exception $e){
             return response()->json([
@@ -53,7 +55,7 @@ class ProductsController extends Controller
                                         "category" => $request->categoryId,
                                         "quantity" => $request->quantity,
                                         "price" => $request->price);                    
-                return response()->json("success" => true, "product" => $res, 201);
+                return response()->json(["success" => true, "product" => $res], 201);
             }
         }catch(\Exception $e){
             return response()->json([

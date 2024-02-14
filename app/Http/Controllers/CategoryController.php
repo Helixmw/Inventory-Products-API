@@ -35,9 +35,9 @@ class CategoryController extends Controller
             }else{
                 $result = Category::create($request->all());
                 $res = (object) array('id'=> $result->id,"name" => $result->name, "limit" => $request->quantity);                    
-                return response()->json("success" => true,
+                return response()->json(["success" => true,
                                         "message" => "Successfully added new category",
-                                        "category" => $res, 201);
+                                        "category" => $res], 201);
             }
         }catch(\Exception $e){
             return response()->json([
@@ -81,10 +81,10 @@ public function editCategory(Request $request, $id){
             $result->name = $request->name;
             $result->quantity = $request->quantity;
             $result->save();
-            return response()->json("success" => true,
+            return response()->json(["success" => true,
                                     "category" => (object) array("id" => $result->id,
                                                     "name" => $result->name,
-                                                    "limit"=>$result->quantity), 201);
+                                                    "limit"=> $result->quantity)], 201);
         }
        }
     }catch(\Exception $e){
