@@ -7,81 +7,49 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Brand;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Classes\Products;
 
 use App\Http\Interfaces\ProductInterface;
 
 
 class ProductsController extends Controller implements ProductInterface
 {
+
+    private $products;
+
+    public function __construct(){
+        $this->products = new Products();
+    }
+
     public function index(){
         try{
-            $result = Product::all()->sortDesc();
-            if($result->count() == 0){
-                return response()->json([
-                    "success" => false,
-                    "message" => "There are no products"], 404); 
-            }else{
-                $res = array();
-            foreach($result as $row){
-                $res[] = array("id" => $row->id,
-                            "name" => $row->name,
-                            "category" => $row->name,
-                            "quantity" => $row->quantity);
-            } 
-            return response()->json(["success" => true, "products" => $res], 200);
-            }          
+            $this->products->GetAll();  
         }catch(\Exception $e){
-            return response()->json([
-                "success" => false,
-                "message" => "Server Error " . $e->getMessage()], 500);
+            $this->products->ErrorMessage($e); 
         }
     }
 
     public function add(Request $request){
         try{
-            $validator = Validator::make($request->all(), ['name'=>'required',
-                                                        'quantity'=>'required|integer',
-                                                        'categoryId' => 'required|integer',
-                                                        'price' => 'required']);
+            $validator = $this->products->ProductValidation($request);
             if($validator->fails()){
                 return response()->json([
                     "success" => false,
                     "message" => "Invalid Entry",
                     "errors" => $validator->errors()], 400);
             }else{
-                $result = Product::create($request->all());
-                $res = (object) array("id"=> $result->id,
-                                        "name" => $result->name, 
-                                        "category" => $request->categoryId,
-                                        "quantity" => $request->quantity,
-                                        "price" => $request->price);                    
-                return response()->json(["success" => true, "product" => $res], 201);
+                $this->products->AddProduct($request);
             }
         }catch(\Exception $e){
-            return response()->json([
-                "success" => false,
-                "message" => "Server Error " . $e->getMessage()], 500);
+            $this->products->ErrorMessage($e); 
         }
-}
+    }
 
 public function getProduct(Request $request, $id){
     try{
-        $result = Product::find($id);
-        if($result == null){
-            return response()->json(["Not Found"=>"No product found"], 404);
-        }else{
-            return response()->json([
-                "success" => true,    
-                "product" => (object) array("id" => $result->id,
-                                                    "name" => $result->name,
-                                                    "category" => $result->categoryId,
-                                                    "quantity" => $result->quantity,
-                                                    "price" => $result->price)]);
-        }
+        $this->products->GetProductById($id);
     }catch(\Exception $e){
-        return response()->json([
-            "success" => false,
-            "message" => "Server Error " . $e->getMessage()], 500);
+        $this->products->ErrorMessage($e); 
     }
 }
 

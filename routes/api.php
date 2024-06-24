@@ -26,7 +26,7 @@ use App\Http\Middleware\CheckUserRoles;
 Route::post("/login", [AuthController::class,"login"]);
 
 //Protected Routes
-Route::group(['middleware' => ['auth:sanctum']], function(){
+// Route::group(['middleware' => ['auth:sanctum']], function(){
 Route::post("/register", [AuthController::class,"register"])->middleware(CheckUserRoles::class);
 Route::get("/categories", [CategoryController::class,"index"]);
 Route::post("/categories", [CategoryController::class,"add"])->middleware(CheckUserRoles::class);
@@ -52,7 +52,7 @@ Route::get("users/administrator/{id}", [UsersController::class,"AssignAdministra
 Route::put("users/edit/{id}", [UsersController::class,"EditUser"])->middleware(CheckUserRoles::class);
 Route::get("users/delete/{id}", [UsersController::class,"DeleteUser"]) ->middleware(CheckUserRoles::class);
 Route::get("/logout", [AuthController::class,"logout"]);
-});
+// });
 
 
 // Route::get('/user', function (Request $request) {
